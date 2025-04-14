@@ -1,74 +1,126 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import RollingNumber from "@/components/rolling-number";
+import { currencies } from "@/constants/currencies";
+import { useWalletStore } from "@/stores/wallet-store";
+import { getCurrencySymbol } from "@/utils/getCurrencySymbol";
+import Entypo from "@expo/vector-icons/Entypo";
+import { useRouter } from "expo-router"; // expo-router용
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function HomeScreen() {
+  const { wallet } = useWalletStore();
+  const router = useRouter();
+
+  const total = wallet.coins.reduce(
+    (sum, c) => sum + c.denomination * c.quantity,
+    0
+  );
+  const symbol = getCurrencySymbol(wallet.country);
+  const currency = currencies[wallet.country];
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+    <View style={styles.container}>
+      <Text style={styles.greeting}>동전 지갑</Text>
+
+      <View style={styles.card}>
+        <View style={styles.cardHeader}>
+          <Text style={styles.label}>현재 보유한 잔돈</Text>
+          <TouchableOpacity
+            style={styles.editBtn}
+            onPress={() => router.push("/history-modal")}
+          >
+            <Text style={styles.editBtnText}>이용내역</Text>
+            <Entypo name="chevron-small-right" size={20} color="#aaa" />
+          </TouchableOpacity>
+        </View>
+
+        <RollingNumber
+          value={total}
+          duration={1000}
+          fontSize={36}
+          color="#fff"
+          currencySymbol={symbol}
+          showComma={true}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+        <Text style={styles.sub}>
+          {currencies[wallet.country].flag} {wallet.country}-
+          {currencies[wallet.country].name}
+        </Text>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => router.push("/wallet-screen")}
+          >
+            <Text style={styles.buttonText}>잔돈 입력하기</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
   );
 }
-
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    backgroundColor: "#121212",
+    padding: 24,
   },
-  stepContainer: {
-    gap: 8,
+  greeting: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#fff",
+    marginBottom: 32,
+  },
+  card: {
+    backgroundColor: "#1f1f1f",
+    padding: 24,
+    borderRadius: 16,
+    marginBottom: 36,
+  },
+  label: {
+    color: "#fff",
+    fontSize: 16,
+  },
+  cardHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  editBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  editBtnText: {
+    color: "#aaa",
+    fontSize: 14,
+  },
+
+  amount: {
+    fontSize: 36,
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  sub: {
+    color: "#888",
+    fontSize: 16,
+    marginTop: 8,
+  },
+
+  buttonContainer: {
+    marginTop: 40,
+  },
+  button: {
+    backgroundColor: "#1e3a8a",
+    paddingVertical: 18,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });

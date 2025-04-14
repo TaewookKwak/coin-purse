@@ -1,43 +1,88 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { BlurView } from "expo-blur";
+import { Tabs } from "expo-router";
+import { Platform, View } from "react-native";
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
+      initialRouteName="index"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+        tabBarShowLabel: true,
+        tabBarActiveTintColor: "#fff",
+        tabBarInactiveTintColor: "#999",
+        tabBarStyle: {
+          height: 60,
+          paddingBottom: 2,
+          paddingTop: 2,
+          backgroundColor: "#121212",
+          elevation: 10,
+          borderTopWidth: 1,
+          borderColor: "#2f2f2f",
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+        },
+        tabBarIconStyle: {
+          marginBottom: 2,
+        },
+        tabBarBackground: () =>
+          Platform.OS === "ios" ? (
+            <BlurView
+              tint="dark"
+              intensity={20}
+              style={{ flex: 1, borderRadius: 20 }}
+            />
+          ) : (
+            <View
+              style={{ flex: 1, backgroundColor: "#1f1f1f", borderRadius: 20 }}
+            />
+          ),
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: "홈",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name="home" size={focused ? 26 : 22} color={color} />
+          ),
+          animation: "shift",
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="calculator-screen"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: "페이",
+
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name="barcode-outline"
+              size={focused ? 26 : 22}
+              color={color}
+            />
+          ),
+          animation: "shift",
+        }}
+      />
+      <Tabs.Screen
+        name="wallet-screen"
+        options={{
+          title: "지갑",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name="wallet" size={focused ? 26 : 22} color={color} />
+          ),
+          animation: "shift",
+        }}
+      />
+      <Tabs.Screen
+        name="settings-screen"
+        options={{
+          title: "설정",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name="settings" size={focused ? 26 : 22} color={color} />
+          ),
+          animation: "shift",
         }}
       />
     </Tabs>
