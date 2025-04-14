@@ -1,50 +1,124 @@
-# Welcome to your Expo app 👋
+# 💰 Coin Purse — Travel Coin Wallet App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A beautifully designed **React Native** app built with **Expo Router**, helping you manage and use leftover coins more efficiently while traveling in countries that still rely on cash.
 
-## Get started
+> “Don’t let your coins go to waste — organize and use them smartly.”
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 🧭 Features
 
-2. Start the app
+- 🔢 **Coin Calculator**  
+  Input an amount → get optimized combinations of coins based on two strategies:
+  - Largest denomination first
+  - Smallest denomination first
 
-   ```bash
-    npx expo start
-   ```
+- 🧲 **Rolling Number Animation**  
+  Elegant number roll-up animation (like slot machines) using Reanimated.
 
-In the output, you'll find options to open the app in a
+- 🌍 **Multinational Currency Support**  
+  Set your country and use the local coin system (`KR`, `JP`, `US`...).
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- 🧾 **Usage History**  
+  Automatically records and displays coin usage history (stored by country via MMKV).
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- 📊 **Visual Coin UI**  
+  Shows real coin images per denomination for intuitive recognition.
 
-## Get a fresh project
+---
 
-When you're ready, run:
+## 📸 Screenshots
 
-```bash
-npm run reset-project
+| Calculator | Wallet | Settings | History Modal |
+|------------|--------|----------|----------------|
+| ![calc](./assets/screenshots/calculator.png) | ![wallet](./assets/screenshots/wallet.png) | ![settings](./assets/screenshots/settings.png) | ![history](./assets/screenshots/history.png) |
+
+---
+
+## 🛠️ Stack
+
+| Tech | Purpose |
+|------|---------|
+| `React Native` | Cross-platform app |
+| `Expo Router` | File-based navigation |
+| `MMKV` | Blazing fast local storage |
+| `Zustand` | State management |
+| `Reanimated` | High-performance animations |
+| `expo-image` | Fast, efficient image handling |
+
+---
+
+## 🔃 Coin Strategy Example
+
+```ts
+// calculateBestCoinCombo(amount, coins, strategy)
+calculateBestCoinCombo(270, [{ denomination: 100, quantity: 3 }, { denomination: 50, quantity: 2 }], "max-first")
+
+// → [100x2, 50x1, 20x1]
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 📦 Folder Structure (key parts)
 
-To learn more about developing your project with Expo, look at the following resources:
+app/
+├── calculator-screen.tsx
+├── wallet-screen.tsx
+├── settings-screen.tsx
+├── (modals)/history.tsx
+components/
+├── RollingNumber.tsx
+├── CoinRow.tsx
+├── ConfirmModal.tsx
+stores/
+└── wallet-store.ts
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## 🌐 Multilingual Support
 
-Join our community of developers creating universal apps.
+-Saves history per country:
+```ts
+- MMKV Key: coin-history-JP, coin-history-KR ...
+```
+- All coin data is localized to currency + flag
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+## 📲 Getting Started
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Run the app
+npx expo start
+
+# (Optional)
+npx expo run:ios
+npx expo run:android
+```
+
+---
+
+## 🚀 Future Improvements
+ - Backup / Export history
+
+ - Cloud sync (optional)
+
+ - Visual charts per usage
+
+ - OCR for scanning physical coins? 🤔
+
+---
+
+## 👨‍💻 Developed by
+Taewoo Kwak
+
+## 📄 License
+MIT License © 2025
+
+
+
+
+
