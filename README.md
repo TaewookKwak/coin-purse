@@ -29,9 +29,22 @@ A beautifully designed **React Native** app built with **Expo Router**, helping 
 
 ## 📸 Screenshots
 
-| Calculator | Wallet | Settings | History Modal |
-|------------|--------|----------|----------------|
-| ![calc](./assets/screenshots/calculator.png) | ![wallet](./assets/screenshots/wallet.png) | ![settings](./assets/screenshots/settings.png) | ![history](./assets/screenshots/history.png) |
+<table>
+  <tr>
+    <td><b>Home</b></td>
+    <td><b>Pay</b></td>
+    <td><b>Purse</b></td>
+    <td><b>Settings</b></td>
+    <td><b>History Modal</b></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/screenshots/home.png" width="150"/></td>
+    <td><img src="./assets/screenshots/pay.png" width="150"/></td>
+    <td><img src="./assets/screenshots/purse.png" width="150"/></td>
+    <td><img src="./assets/screenshots/settings.png" width="150"/></td>
+    <td><img src="./assets/screenshots/home-history.png" width="150"/></td>
+  </tr>
+</table>
 
 ---
 
@@ -61,17 +74,36 @@ calculateBestCoinCombo(270, [{ denomination: 100, quantity: 3 }, { denomination:
 
 ## 📦 Folder Structure (key parts)
 
-app/
-├── calculator-screen.tsx
-├── wallet-screen.tsx
-├── settings-screen.tsx
-├── (modals)/history.tsx
-components/
-├── RollingNumber.tsx
-├── CoinRow.tsx
-├── ConfirmModal.tsx
-stores/
-└── wallet-store.ts
+```
+📦app
+ ┣ 📂(modals)
+ ┃ ┗ 📜history-modal.tsx
+ ┣ 📂(tabs)
+ ┃ ┣ 📜_layout.tsx
+ ┃ ┣ 📜calculator-screen.tsx
+ ┃ ┣ 📜index.tsx
+ ┃ ┣ 📜settings-screen.tsx
+ ┃ ┗ 📜wallet-screen.tsx
+ ┣ 📜+not-found.tsx
+ ┗ 📜_layout.tsx
+📦components
+ ┣ 📂ui
+ ┃ ┣ 📜IconSymbol.ios.tsx
+ ┃ ┣ 📜IconSymbol.tsx
+ ┃ ┗ 📜confirm-modal.tsx
+ ┣ 📜haptic-tab.tsx
+ ┣ 📜layout-with-tab-padding.tsx
+ ┣ 📜rolling-number.tsx
+ ┗ 📜splash-screen.tsx
+📦constants
+ ┣ 📜colors.ts
+ ┗ 📜currencies.ts
+📦stores
+ ┣ 📂__test__
+ ┃ ┗ 📜wallet-store.test.ts
+ ┗ 📜wallet-store.ts
+```
+
 
 ---
 
