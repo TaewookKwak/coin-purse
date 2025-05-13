@@ -12,7 +12,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: "#fff",
         tabBarInactiveTintColor: "#999",
         tabBarStyle: {
-          height: 60,
+          height: 80,
           paddingBottom: 2,
           paddingTop: 2,
           backgroundColor: "#121212",
@@ -26,6 +26,7 @@ export default function TabLayout() {
         tabBarIconStyle: {
           marginBottom: 2,
         },
+        animation: "shift",
         tabBarBackground: () =>
           Platform.OS === "ios" ? (
             <BlurView
@@ -47,7 +48,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name="home" size={focused ? 26 : 22} color={color} />
           ),
-          animation: "shift",
         }}
       />
       <Tabs.Screen
@@ -62,7 +62,6 @@ export default function TabLayout() {
               color={color}
             />
           ),
-          animation: "shift",
         }}
       />
       <Tabs.Screen
@@ -72,7 +71,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name="wallet" size={focused ? 26 : 22} color={color} />
           ),
-          animation: "shift",
         }}
       />
       <Tabs.Screen
@@ -82,7 +80,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name="settings" size={focused ? 26 : 22} color={color} />
           ),
-          animation: "shift",
         }}
       />
     </Tabs>

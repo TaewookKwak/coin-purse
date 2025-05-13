@@ -38,7 +38,7 @@ export default function SettingsScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.container}>
         <Text style={styles.title}>국가/화폐 선택</Text>
 
@@ -103,6 +103,10 @@ export default function SettingsScreen() {
 }
 
 const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 1,
+    backgroundColor: "#121212",
+  },
   container: {
     flex: 1,
     backgroundColor: "#121212",

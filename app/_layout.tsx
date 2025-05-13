@@ -44,7 +44,7 @@ export default function RootLayout() {
           <Stack
             screenOptions={{
               contentStyle: {
-                backgroundColor: "#121212",
+                backgroundColor: "#121212", // 화면 전환시 배경색
               },
             }}
           >

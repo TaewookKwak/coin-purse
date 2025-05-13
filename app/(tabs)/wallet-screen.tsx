@@ -27,7 +27,7 @@ export default function WalletScreen() {
     coins.reduce((sum, c) => sum + c.denomination * c.quantity, 0);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.container}>
         <Text style={styles.title}>나의 지갑 속 잔돈</Text>
 
@@ -88,6 +88,10 @@ export default function WalletScreen() {
   );
 }
 const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 1,
+    backgroundColor: "#121212",
+  },
   container: {
     flex: 1,
     backgroundColor: "#121212",

@@ -79,7 +79,7 @@ export default function CalculatorScreen() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.safeAreaView}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.select({ ios: "padding", android: undefined })}
@@ -224,6 +224,10 @@ export default function CalculatorScreen() {
 }
 
 const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 1,
+    backgroundColor: "#121212",
+  },
   container: {
     flex: 1,
     backgroundColor: "#121212",

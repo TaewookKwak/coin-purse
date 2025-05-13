@@ -5,7 +5,13 @@ import { getCurrencySymbol } from "@/utils/getCurrencySymbol";
 import Entypo from "@expo/vector-icons/Entypo";
 import { useRouter } from "expo-router"; // expo-router용
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function HomeScreen() {
   const { wallet } = useWalletStore();
@@ -19,47 +25,53 @@ export default function HomeScreen() {
   const currency = currencies[wallet.country];
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.greeting}>동전 지갑</Text>
+    <SafeAreaView style={styles.safeAreaView}>
+      <View style={styles.container}>
+        <Text style={styles.greeting}>동전 지갑</Text>
 
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.label}>현재 보유한 잔돈</Text>
-          <TouchableOpacity
-            style={styles.editBtn}
-            onPress={() => router.push("/history-modal")}
-          >
-            <Text style={styles.editBtnText}>이용내역</Text>
-            <Entypo name="chevron-small-right" size={20} color="#aaa" />
-          </TouchableOpacity>
-        </View>
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <Text style={styles.label}>현재 보유한 잔돈</Text>
+            <TouchableOpacity
+              style={styles.editBtn}
+              onPress={() => router.push("/history-modal")}
+            >
+              <Text style={styles.editBtnText}>이용내역</Text>
+              <Entypo name="chevron-small-right" size={20} color="#aaa" />
+            </TouchableOpacity>
+          </View>
 
-        <RollingNumber
-          value={total}
-          duration={1000}
-          fontSize={36}
-          color="#fff"
-          currencySymbol={symbol}
-          showComma={true}
-        />
-        <Text style={styles.sub}>
-          {currencies[wallet.country].flag} {wallet.country}-
-          {currencies[wallet.country].name}
-        </Text>
+          <RollingNumber
+            value={total}
+            duration={1000}
+            fontSize={36}
+            color="#fff"
+            currencySymbol={symbol}
+            showComma={true}
+          />
+          <Text style={styles.sub}>
+            {currencies[wallet.country].flag} {wallet.country}-
+            {currencies[wallet.country].name}
+          </Text>
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => router.push("/wallet-screen")}
-          >
-            <Text style={styles.buttonText}>잔돈 입력하기</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => router.push("/wallet-screen")}
+            >
+              <Text style={styles.buttonText}>잔돈 입력하기</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 1,
+    backgroundColor: "#121212",
+  },
   container: {
     flex: 1,
     backgroundColor: "#121212",
