@@ -1,29 +1,23 @@
-# 💰 Coin Purse — Travel Coin Wallet App
+# 동전지갑 — 여행 동전지갑 App
 
-A beautifully designed **React Native** app built with **Expo Router**, helping you manage and use leftover coins more efficiently while traveling in countries that still rely on cash.
+일본여행을 계획하던 중 일본여행 필수 준비물이 동전지갑이라는 것을 알게됨. 동전 사용 비율이 높은 국가를 여행 후 많이 남는 자투리 동전을 여행중 효과적으로 활용하고자 기획
 
-> “Don’t let your coins go to waste — organize and use them smartly.”
+> “국가를 여행을 마칠 때 마다 남는 한 줌의 동전들, 이제는 모으지말고 먼저 쓰자!”
 
 ---
 
-## 🧭 Features
+## 기능
 
-- 🔢 **Coin Calculator**  
-  Input an amount → get optimized combinations of coins based on two strategies:
-  - Largest denomination first
-  - Smallest denomination first
+- 🔢 **동전 계산기**  
+  입력한 금액에 대해 두 가지 전략으로 최적 동전 조합을 제안
+  - 큰 단위 우선
+  - 작은 단위 우선
 
-- 🧲 **Rolling Number Animation**  
-  Elegant number roll-up animation (like slot machines) using Reanimated.
+- 🌍 **다국적 통화 지원**  
+  일본, 미국 등 국가 선택에 따라 동전 체계 자동 적용 가능 (`KR`, `JP`, `US`)
 
-- 🌍 **Multinational Currency Support**  
-  Set your country and use the local coin system (`KR`, `JP`, `US`...).
-
-- 🧾 **Usage History**  
-  Automatically records and displays coin usage history (stored by country via MMKV).
-
-- 📊 **Visual Coin UI**  
-  Shows real coin images per denomination for intuitive recognition.
+- 🧾 **사용내역 자동 기록**  
+  사용된 동전 조합을 날짜별로 저장 및 내역 화면 제공
 
 ---
 
@@ -48,7 +42,7 @@ A beautifully designed **React Native** app built with **Expo Router**, helping 
 
 ---
 
-## 🛠️ Stack
+## ⚒️ Stack
 
 | Tech | Purpose |
 |------|---------|
@@ -61,7 +55,7 @@ A beautifully designed **React Native** app built with **Expo Router**, helping 
 
 ---
 
-## 🔃 Coin Strategy Example
+## 최적의 동전 조합 전략 예시
 
 ```ts
 // calculateBestCoinCombo(amount, coins, strategy)
@@ -72,7 +66,7 @@ calculateBestCoinCombo(270, [{ denomination: 100, quantity: 3 }, { denomination:
 
 ---
 
-## 📦 Folder Structure (key parts)
+## 📦 폴더 구조
 
 ```
 📦app
@@ -105,19 +99,7 @@ calculateBestCoinCombo(270, [{ denomination: 100, quantity: 3 }, { denomination:
 ```
 
 
----
-
-## 🌐 Multilingual Support
-
--Saves history per country:
-```ts
-- MMKV Key: coin-history-JP, coin-history-KR ...
-```
-- All coin data is localized to currency + flag
-
----
-
-## 📲 Getting Started
+## 📲 시작하기
 
 ```bash
 # 1. Install dependencies
@@ -133,14 +115,14 @@ npx expo run:android
 
 ---
 
-## 🚀 Future Improvements
+## 🚀 추가 기능 개발
  - Backup / Export history
 
  - Cloud sync (optional)
 
  - Visual charts per usage
 
- - OCR for scanning physical coins? 🤔
+ - OCR for scanning physical coins?
 
 ---
 
