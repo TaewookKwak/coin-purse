@@ -18,7 +18,7 @@
                      BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
                      BuildableName = "coinpurse.app"
                      BlueprintName = "coinpurse"
-                     ReferencedContainer = "container:coinpurse.xcodeproj">
+                     ReferencedContainer = "container:&#x110b;&#x1175;.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>
             </ActionContent>
@@ -36,7 +36,7 @@
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
                BuildableName = "coinpurse.app"
                BlueprintName = "coinpurse"
-               ReferencedContainer = "container:coinpurse.xcodeproj">
+               ReferencedContainer = "container:&#x110b;&#x1175;.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -49,7 +49,7 @@
       shouldAutocreateTestPlan = "YES">
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -65,7 +65,7 @@
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "coinpurse.app"
             BlueprintName = "coinpurse"
-            ReferencedContainer = "container:coinpurse.xcodeproj">
+            ReferencedContainer = "container:&#x110b;&#x1175;.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -82,7 +82,7 @@
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "coinpurse.app"
             BlueprintName = "coinpurse"
-            ReferencedContainer = "container:coinpurse.xcodeproj">
+            ReferencedContainer = "container:&#x110b;&#x1175;.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
