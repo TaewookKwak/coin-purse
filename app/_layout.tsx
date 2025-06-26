@@ -19,17 +19,19 @@ SplashScreenApi.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(false);
 
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
   useEffect(() => {
-    if (loaded && !showSplash) {
-      SplashScreenApi.hideAsync();
+    if (loaded) {
+      SplashScreenApi.hideAsync().then(() => {
+        setShowSplash(true);
+      });
     }
-  }, [loaded, showSplash]);
+  }, [loaded]);
 
   if (!loaded) {
     return null;
@@ -37,39 +39,41 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      {showSplash ? (
-        <SplashScreen onFinish={() => setShowSplash(false)} />
-      ) : (
-        <>
-          <Stack
-            screenOptions={{
-              contentStyle: {
-                backgroundColor: "#121212", // 화면 전환시 배경색
-              },
-            }}
-          >
-            {/* 스크린*/}
-            <Stack.Screen
-              name="(tabs)"
-              options={{
-                headerShown: false,
+      <View style={{ flex: 1, backgroundColor: "#000000" }}>
+        {showSplash ? (
+          <SplashScreen onFinish={() => setShowSplash(false)} />
+        ) : (
+          <>
+            <Stack
+              screenOptions={{
+                contentStyle: {
+                  backgroundColor: "#121212", // 화면 전환시 배경색
+                },
               }}
-            />
-            <Stack.Screen name="+not-found" />
+            >
+              {/* 스크린*/}
+              <Stack.Screen
+                name="(tabs)"
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen name="+not-found" />
 
-            {/* 모달 */}
-            <Stack.Screen
-              name="(modals)/history-modal"
-              options={{
-                presentation: "modal",
-                headerShown: false,
-              }}
-            />
-          </Stack>
+              {/* 모달 */}
+              <Stack.Screen
+                name="(modals)/history-modal"
+                options={{
+                  presentation: "modal",
+                  headerShown: false,
+                }}
+              />
+            </Stack>
 
-          <StatusBar style="auto" />
-        </>
-      )}
+            <StatusBar style="auto" />
+          </>
+        )}
+      </View>
     </ThemeProvider>
   );
 }

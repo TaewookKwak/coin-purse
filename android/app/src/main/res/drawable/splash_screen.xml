@@ -1,0 +1,12 @@
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 배경 색 -->
+    <item android:drawable="@color/splashscreen_background" />
+
+    <!-- 전체 화면에 이미지를 꽉 채우기 -->
+    <item>
+        <bitmap
+            android:gravity="fill"
+            android:src="@drawable/launch_screen" />
+    </item>
+</layer-list>
