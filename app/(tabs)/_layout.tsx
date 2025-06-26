@@ -1,7 +1,6 @@
+import { HapticTab } from "@/components/haptic-tab";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { BlurView } from "expo-blur";
 import { Tabs } from "expo-router";
-import { Platform, View } from "react-native";
 export default function TabLayout() {
   return (
     <Tabs
@@ -27,18 +26,7 @@ export default function TabLayout() {
           marginBottom: 2,
         },
         animation: "shift",
-        tabBarBackground: () =>
-          Platform.OS === "ios" ? (
-            <BlurView
-              tint="dark"
-              intensity={20}
-              style={{ flex: 1, borderRadius: 20 }}
-            />
-          ) : (
-            <View
-              style={{ flex: 1, backgroundColor: "#1f1f1f", borderRadius: 20 }}
-            />
-          ),
+        tabBarButton: (props) => <HapticTab {...props} />,
       }}
     >
       <Tabs.Screen
