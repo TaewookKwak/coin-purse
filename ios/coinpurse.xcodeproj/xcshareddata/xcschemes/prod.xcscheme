@@ -18,7 +18,7 @@
                      BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
                      BuildableName = "coinpurse.app"
                      BlueprintName = "coinpurse"
-                     ReferencedContainer = "container:&#x110b;&#x1175;.xcodeproj">
+                     ReferencedContainer = "container:coinpurse.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>
             </ActionContent>
@@ -36,7 +36,7 @@
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
                BuildableName = "coinpurse.app"
                BlueprintName = "coinpurse"
-               ReferencedContainer = "container:&#x110b;&#x1175;.xcodeproj">
+               ReferencedContainer = "container:coinpurse.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -65,7 +65,7 @@
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "coinpurse.app"
             BlueprintName = "coinpurse"
-            ReferencedContainer = "container:&#x110b;&#x1175;.xcodeproj">
+            ReferencedContainer = "container:coinpurse.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -82,7 +82,7 @@
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "coinpurse.app"
             BlueprintName = "coinpurse"
-            ReferencedContainer = "container:&#x110b;&#x1175;.xcodeproj">
+            ReferencedContainer = "container:coinpurse.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
