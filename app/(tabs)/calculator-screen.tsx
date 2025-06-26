@@ -16,7 +16,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Modal } from "react-native";
 
 type Strategy = "max-first" | "min-first";
 
