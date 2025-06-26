@@ -36,3 +36,12 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+
+.env
+.env.dev
+.env.local
+.env.prod
+
+ios/Config/tmp.xcconfig
+ios/tmp.xcconfig
+android/local.properties

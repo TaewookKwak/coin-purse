@@ -12,12 +12,15 @@ import "react-native-reanimated";
 
 import SplashScreen from "@/components/splash-screen";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import CodePush from "@revopush/react-native-code-push";
 import { View } from "react-native";
+import Config from "react-native-config";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreenApi.preventAutoHideAsync();
 
-export default function RootLayout() {
+function RootLayout() {
+  console.log("🔑 CodePush Key:", Config.CODEPUSH_KEY);
   const colorScheme = useColorScheme();
   const [showSplash, setShowSplash] = useState(false);
 
@@ -77,3 +80,7 @@ export default function RootLayout() {
     </ThemeProvider>
   );
 }
+
+export default CodePush({
+  checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+})(RootLayout);

@@ -15,6 +15,8 @@ import com.facebook.soloader.SoLoader
 
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
+import com.microsoft.codepush.react.CodePush
+
 
 class MainApplication : Application(), ReactApplication {
 
@@ -27,6 +29,11 @@ class MainApplication : Application(), ReactApplication {
             // packages.add(new MyReactNativePackage());
             return packages
           }
+
+          override fun getJSBundleFile(): String {
+             return CodePush.getJSBundleFile() 
+          }
+
 
           override fun getJSMainModuleName(): String = ".expo/.virtual-metro-entry"
 

@@ -1,8 +1,28 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+apply from: "../../node_modules/@revopush/react-native-code-push/android/codepush.gradle"
+// dotenv.gradle을 적용하여 위 env 파일 설정을 처리
+apply from: project(':react-native-config').projectDir.getPath() + '/dotenv.gradle'
+
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
+
+
+def getCodePushKeyFromLocalProperties() {
+    def localProps = new Properties()
+    def file = rootProject.file("local.properties")
+    if (file.exists()) {
+        file.withInputStream { stream ->
+            localProps.load(stream)
+        }
+    }
+    return localProps.getProperty("CODEPUSH_KEY", "")
+}
+
+def CODEPUSH_KEY = getCodePushKeyFromLocalProperties()
+println "👀 CODEPUSH_KEY: ${CODEPUSH_KEY}"
+
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -80,6 +100,18 @@ def enableProguardInReleaseBuilds = (findProperty('android.enableProguardInRelea
  */
 def jscFlavor = 'org.webkit:android-jsc:+'
 
+
+// 각 빌드 환경에서 사용할 env 파일 정의
+project.ext.envConfigFiles = [
+    devDebug: ".env.dev",
+    devRelease: ".env.dev",
+    localDebug: ".env.local",
+    prodDebug: ".env.prod",
+    prodRelease: ".env.prod",
+]
+
+
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -93,6 +125,21 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
+        flavorDimensions "version"
+        productFlavors {
+            dev {
+                dimension 'version'
+                resValue "string", "CodePushDeploymentKey", "\"${CODEPUSH_KEY}\""
+            }
+            local {
+                dimension 'version'
+                resValue "string", "CodePushDeploymentKey", "\"${CODEPUSH_KEY}\""
+            }
+            prod {
+                dimension 'version'
+                resValue "string", "CodePushDeploymentKey", "\"${CODEPUSH_KEY}\""
+            }
+        }
     }
     signingConfigs {
         debug {
@@ -174,3 +221,4 @@ dependencies {
         implementation jscFlavor
     }
 }
+

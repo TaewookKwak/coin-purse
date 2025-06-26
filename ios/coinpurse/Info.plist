@@ -75,5 +75,37 @@
     <string>Automatic</string>
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
+    <!-- 레보푸쉬 관련 -->
+    <key>CodePushDeploymentKey</key>
+    <string>$(CODEPUSH_KEY)</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <key>NSExceptionDomains</key>
+      <dict>
+        <key>api.revopush.org</key>
+        <dict>
+          <key>NSIncludesSubdomains</key>
+          <true/>
+          <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+          <false/>
+          <key>NSTemporaryExceptionMinimumTLSVersion</key>
+          <string>TLSv1.2</string>
+        </dict>
+        <key>blob.revopush.org</key>
+        <dict>
+          <key>NSIncludesSubdomains</key>
+          <true/>
+          <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+          <false/>
+          <key>NSTemporaryExceptionMinimumTLSVersion</key>
+          <string>TLSv1.2</string>
+        </dict>
+      </dict>
+    </dict>
+    <key>CodePushPublicKey</key>
+      <string>-----BEGIN PUBLIC KEY-----
+         MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANkWYydPuyOumR/sn2agNBVDnzyRpM16NAUpYPGxNgjSEp0etkDNgzzdzyvyl+OsAGBYF3jCxYOXozum+uV5hQECAwEAAQ==
+         -----END PUBLIC KEY-----</string>
   </dict>
+
 </plist>
