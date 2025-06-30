@@ -8,20 +8,14 @@ apply from: project(':react-native-config').projectDir.getPath() + '/dotenv.grad
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
+def ENV = System.getenv("ENV")
+def CODEPUSH_KEY = System.getenv("CODEPUSH_KEY")
 
-def getCodePushKeyFromLocalProperties() {
-    def localProps = new Properties()
-    def file = rootProject.file("local.properties")
-    if (file.exists()) {
-        file.withInputStream { stream ->
-            localProps.load(stream)
-        }
-    }
-    return localProps.getProperty("CODEPUSH_KEY", "")
-}
-
-def CODEPUSH_KEY = getCodePushKeyFromLocalProperties()
+println "👀 ENV: ${ENV}"
 println "👀 CODEPUSH_KEY: ${CODEPUSH_KEY}"
+
+
+
 
 
 /**

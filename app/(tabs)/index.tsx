@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Config from "react-native-config";
 
 export default function HomeScreen() {
   const { wallet } = useWalletStore();
@@ -27,7 +28,9 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.container}>
-        <Text style={styles.greeting}>동전 지갑</Text>
+        <Text style={styles.greeting}>
+          동전 지갑 {Config.ENV !== "prod" ? `(${Config.ENV})` : ""}
+        </Text>
 
         <View style={styles.card}>
           <View style={styles.cardHeader}>

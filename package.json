@@ -9,14 +9,16 @@
     "android": "npm run inject-env && expo run:android",
     "ios": "npm run inject-env && expo run:ios",
     "web": "expo start --web",
-    "android:dev": "npm run inject-env && expo run:android --variant=devDebug",
-    "android:local": "npm run inject-env && expo run:android --variant=localDebug",
-    "android:prod": "npm run inject-env && expo run:android --variant=prodDebug",
-    "ios:dev": "npm run inject-env && expo run:ios --scheme dev",
-    "ios:local": "npm run inject-env && expo run:ios --scheme local",
-    "ios:prod": "npm run inject-env && expo run:ios --scheme prod",
+    "android:dev": "ENV=dev npm run inject-env && expo run:android --variant=devDebug",
+    "android:local": "ENV=local npm run inject-env && expo run:android --variant=localDebug",
+    "android:prod": "ENV=prod npm run inject-env && expo run:android --variant=prodDebug",
+    "ios:dev": "ENV=dev npm run inject-env && expo run:ios --scheme dev",
+    "ios:local": "ENV=local npm run inject-env && expo run:ios --scheme local",
+    "ios:prod": "ENV=prod npm run inject-env && expo run:ios --scheme prod",
     "test": "jest --watchAll",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "build:android:prod:apk": "cd android && ENVFILE=.env.prod ./gradlew assembleProdRelease",
+    "build:android:prod:aab": "cd android && ENVFILE=.env.prod ./gradlew bundleProdRelease"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
