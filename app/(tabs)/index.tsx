@@ -24,12 +24,16 @@ export default function HomeScreen() {
   );
   const symbol = getCurrencySymbol(wallet.country);
   const currency = currencies[wallet.country];
+  console.log("🔑 CodePush Key:", Config.CODEPUSH_KEY);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.container}>
         <Text style={styles.greeting}>
-          !!동전지갑 {Config.ENV !== "prod" ? `(${Config.ENV})` : ""}
+          동전 지갑{" "}
+          {Config.ENV !== "prod"
+            ? `(${Config.ENV}, ${Config.CODEPUSH_KEY})`
+            : ""}
         </Text>
 
         <View style={styles.card}>
