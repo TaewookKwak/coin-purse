@@ -29,7 +29,7 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.container}>
         <Text style={styles.greeting}>
-          동전 지갑 {Config.ENV !== "prod" ? `(${Config.ENV})` : ""}
+          !!동전지갑 {Config.ENV !== "prod" ? `(${Config.ENV})` : ""}
         </Text>
 
         <View style={styles.card}>
