@@ -29,6 +29,13 @@ function RootLayout() {
   });
 
   useEffect(() => {
+    CodePush.sync({
+      updateDialog: true,
+      installMode: CodePush.InstallMode.IMMEDIATE,
+    });
+  }, []);
+
+  useEffect(() => {
     if (loaded) {
       SplashScreenApi.hideAsync().then(() => {
         setShowSplash(true);

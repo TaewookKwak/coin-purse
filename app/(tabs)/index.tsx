@@ -30,7 +30,7 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.container}>
         <Text style={styles.greeting}>
-          동전 지갑{" "}
+          1231212121213동전 지갑1212{" "}
           {Config.ENV !== "prod"
             ? `(${Config.ENV}, ${Config.CODEPUSH_KEY})`
             : ""}

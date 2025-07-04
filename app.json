@@ -36,6 +36,13 @@
         "projectId": "ae3c101c-3efe-4214-80a7-26b36db9b8c0"
       }
     },
-    "owner": "taewookkwak"
+    "owner": "taewookkwak",
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/ae3c101c-3efe-4214-80a7-26b36db9b8c0",
+      "requestHeaders": {
+        "expo-channel-name": "dev"
+      }
+    }
   }
 }
