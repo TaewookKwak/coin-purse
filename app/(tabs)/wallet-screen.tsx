@@ -60,7 +60,11 @@ export default function WalletScreen() {
               <View style={styles.counter}>
                 <TouchableOpacity
                   style={styles.btn}
-                  onPress={() => addCoin(item.denomination, -1)}
+                  onPress={() => {
+                    if (getCoinQuantity(item.denomination) > 0) {
+                      addCoin(item.denomination, -1);
+                    }
+                  }}
                 >
                   <Text style={styles.btnText}>-</Text>
                 </TouchableOpacity>

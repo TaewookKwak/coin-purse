@@ -14,13 +14,12 @@ import SplashScreen from "@/components/splash-screen";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import CodePush from "@revopush/react-native-code-push";
 import { View } from "react-native";
-import Config from "react-native-config";
+import * as Updates from "expo-updates";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreenApi.preventAutoHideAsync();
 
 function RootLayout() {
-  console.log("🔑 CodePush Key:", Config.CODEPUSH_KEY);
   const colorScheme = useColorScheme();
   const [showSplash, setShowSplash] = useState(false);
 
@@ -29,19 +28,28 @@ function RootLayout() {
   });
 
   useEffect(() => {
-    CodePush.sync({
-      updateDialog: true,
-      installMode: CodePush.InstallMode.IMMEDIATE,
-    });
-  }, []);
-
-  useEffect(() => {
     if (loaded) {
       SplashScreenApi.hideAsync().then(() => {
         setShowSplash(true);
       });
     }
   }, [loaded]);
+
+  useEffect(() => {
+    const checkUpdates = async () => {
+      try {
+        const update = await Updates.checkForUpdateAsync();
+
+        if (update.isAvailable) {
+          await Updates.fetchUpdateAsync();
+        }
+      } catch (e) {
+        console.log("Update check failed", e);
+      }
+    };
+
+    checkUpdates();
+  }, []);
 
   if (!loaded) {
     return null;

@@ -31,42 +31,15 @@ export default function HomeScreen() {
   );
   const [isUpdateDownloaded, setIsUpdateDownloaded] = useState(false);
 
-  useEffect(() => {
-    const checkUpdates = async () => {
-      try {
-        const update = await Updates.checkForUpdateAsync();
-        setIsUpdateAvailable(update.isAvailable);
-
-        if (update.isAvailable) {
-          await Updates.fetchUpdateAsync();
-          setIsUpdateDownloaded(true);
-        }
-      } catch (e) {
-        console.log("Update check failed", e);
-      }
-    };
-
-    checkUpdates();
-  }, []);
-
-  useEffect(() => {
-    console.log("✅ Updates info:", Updates);
-    console.log("✅ runtimeVersion:", Updates.runtimeVersion);
-    console.log("✅ releaseChannel:", Updates.channel);
-    console.log("✅ manifest:", Updates.manifest);
-  }, []);
-
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.container}>
         <Text style={styles.greeting}>
-          동전 지갑입니당다라라랑쿠당당{" "}
-          {/* {Config.ENV !== "prod"
-            ? `(${Config.ENV}, ${Config.CODEPUSH_KEY})`
-            : ""} */}
+          동전 지갑
+          {Config.ENV !== "prod" ? `(${Config.ENV})` : ""}
         </Text>
 
-        <Text style={{ color: "white" }}>OTA 업데이트 상태: {Config.ENV}</Text>
+        {/* <Text style={{ color: "white" }}>OTA 업데이트 상태: {Config.ENV}</Text>
         <Text style={{ color: "white" }}>
           업데이트 있음? {String(isUpdateAvailable)}
         </Text>
@@ -75,7 +48,7 @@ export default function HomeScreen() {
         </Text>
         <Text style={{ color: "white" }}>
           런타임 버전: {Updates.runtimeVersion}
-        </Text>
+        </Text> */}
 
         <View style={styles.card}>
           <View style={styles.cardHeader}>

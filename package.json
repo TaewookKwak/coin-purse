@@ -18,7 +18,13 @@
     "test": "jest --watchAll",
     "lint": "expo lint",
     "build:android:prod:apk": "cd android && ENVFILE=.env.prod ./gradlew assembleProdRelease",
-    "build:android:prod:aab": "cd android && ENVFILE=.env.prod ./gradlew bundleProdRelease"
+    "build:android:prod:aab": "cd android && ENVFILE=.env.prod ./gradlew bundleProdRelease",
+    "codepush:dev": "eas update --channel dev --message 'dev update'",
+    "codepush:prod": "eas update --channel prod --message 'prod update'",
+    "create:channel:dev": "eas channel:create dev",
+    "delete:channel:dev": "eas channel:delete dev",
+    "create:channel:prod": "eas channel:create prod",
+    "delete:channel:prod": "eas channel:delete prod"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
