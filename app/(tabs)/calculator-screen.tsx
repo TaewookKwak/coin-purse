@@ -14,7 +14,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
+  Keyboard,
 } from "react-native";
 
 type Strategy = "max-first" | "min-first";
@@ -79,146 +81,150 @@ export default function CalculatorScreen() {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.select({ ios: "padding", android: undefined })}
-      >
-        <Text style={styles.title}>얼마를 계산할까요?</Text>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.select({ ios: "padding", android: undefined })}
+        >
+          <Text style={styles.title}>얼마를 계산할까요?</Text>
 
-        {/* 금액 입력 영역 */}
-        <View style={styles.inputWrapper}>
-          <TextInput
-            value={amount}
-            onChangeText={(text) => {
-              setAmount(text);
-              const num = parseInt(text, 10);
-              if (!isNaN(num)) {
-                runCalculation(num, strategy);
-              } else {
-                setCombo(null);
-                setResultText("");
-              }
-            }}
-            keyboardType="number-pad"
-            placeholder="0"
-            placeholderTextColor="#666"
-            style={styles.input}
-          />
-          <Text style={styles.unit}>{symbol}</Text>
-        </View>
+          {/* 금액 입력 영역 */}
+          <View style={styles.inputWrapper}>
+            <TextInput
+              value={amount}
+              onChangeText={(text) => {
+                setAmount(text);
+                const num = parseInt(text, 10);
+                if (!isNaN(num)) {
+                  runCalculation(num, strategy);
+                } else {
+                  setCombo(null);
+                  setResultText("");
+                }
+              }}
+              keyboardType="number-pad"
+              placeholder="0"
+              placeholderTextColor="#666"
+              style={styles.input}
+            />
+            <Text style={styles.unit}>{symbol}</Text>
+          </View>
 
-        {/* 전략 선택 영역 */}
-        <View style={styles.strategyContainer}>
-          <TouchableOpacity
-            style={[
-              styles.strategyBtn,
-              strategy === "max-first" && styles.strategyBtnSelected,
-            ]}
-            onPress={() => handleStrategyChange("max-first")}
-          >
-            <Text
-              style={[
-                styles.strategyText,
-                strategy === "max-first" && styles.strategyTextSelected,
-              ]}
-            >
-              큰 단위 동전부터 사용
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.strategyBtn,
-              strategy === "min-first" && styles.strategyBtnSelected,
-            ]}
-            onPress={() => handleStrategyChange("min-first")}
-          >
-            <Text
-              style={[
-                styles.strategyText,
-                strategy === "min-first" && styles.strategyTextSelected,
-              ]}
-            >
-              작은 단위 동전부터 사용
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* 결과 텍스트 */}
-        {resultText ? <Text style={styles.resultBox}>{resultText}</Text> : null}
-
-        {/* 추천 동전 목록 */}
-        <FlatList
-          contentContainerStyle={styles.changeList}
-          data={combo}
-          showsVerticalScrollIndicator={true}
-          renderItem={({ item }) => {
-            console.log(item);
-            return (
-              <View style={styles.changeItemWrapper}>
-                <Image
-                  source={item.image}
-                  style={styles.changeItemImage}
-                  contentFit="contain"
-                  transition={300}
-                />
-                <View style={styles.changeItemTextWrapper}>
-                  <Text style={styles.changeItem}>
-                    {item.denomination}
-                    {symbol}
-                  </Text>
-                  <Text style={styles.changeItem}>x</Text>
-                  <Text style={styles.changeItem}>{item.quantity}개</Text>
-                </View>
-              </View>
-            );
-          }}
-        />
-
-        {combo && (
-          <View style={styles.buttonWrapper}>
+          {/* 전략 선택 영역 */}
+          <View style={styles.strategyContainer}>
             <TouchableOpacity
-              style={styles.button}
-              onPress={() => setShowConfirmModal(true)}
+              style={[
+                styles.strategyBtn,
+                strategy === "max-first" && styles.strategyBtnSelected,
+              ]}
+              onPress={() => handleStrategyChange("max-first")}
             >
-              <Text style={styles.buttonText}>사용하기</Text>
+              <Text
+                style={[
+                  styles.strategyText,
+                  strategy === "max-first" && styles.strategyTextSelected,
+                ]}
+              >
+                큰 단위 동전부터 사용
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.strategyBtn,
+                strategy === "min-first" && styles.strategyBtnSelected,
+              ]}
+              onPress={() => handleStrategyChange("min-first")}
+            >
+              <Text
+                style={[
+                  styles.strategyText,
+                  strategy === "min-first" && styles.strategyTextSelected,
+                ]}
+              >
+                작은 단위 동전부터 사용
+              </Text>
             </TouchableOpacity>
           </View>
-        )}
 
-        {/* 확인용 모달 */}
-        <ConfirmModal
-          visible={showConfirmModal}
-          title="이렇게 사용하시겠어요?"
-          confirmText="사용하기"
-          cancelText="취소"
-          onCancel={() => setShowConfirmModal(false)}
-          onConfirm={handleUseCoins}
-        >
+          {/* 결과 텍스트 */}
+          {resultText ? (
+            <Text style={styles.resultBox}>{resultText}</Text>
+          ) : null}
+
+          {/* 추천 동전 목록 */}
           <FlatList
+            contentContainerStyle={styles.changeList}
             data={combo}
-            keyExtractor={(item) => `${item.denomination}`}
-            contentContainerStyle={{ gap: 12, marginTop: 20 }}
-            renderItem={({ item }) => (
-              <View style={styles.changeItemWrapper}>
-                <Image
-                  source={item.image}
-                  style={styles.changeItemImage}
-                  contentFit="contain"
-                />
-                <View style={styles.changeItemTextWrapper}>
-                  <Text style={styles.changeItem}>
-                    {item.denomination}
-                    {symbol}
-                  </Text>
-                  <Text style={styles.changeItem}>x</Text>
-                  <Text style={styles.changeItem}>{item.quantity}개</Text>
+            showsVerticalScrollIndicator={true}
+            renderItem={({ item }) => {
+              console.log(item);
+              return (
+                <View style={styles.changeItemWrapper}>
+                  <Image
+                    source={item.image}
+                    style={styles.changeItemImage}
+                    contentFit="contain"
+                    transition={300}
+                  />
+                  <View style={styles.changeItemTextWrapper}>
+                    <Text style={styles.changeItem}>
+                      {item.denomination}
+                      {symbol}
+                    </Text>
+                    <Text style={styles.changeItem}>x</Text>
+                    <Text style={styles.changeItem}>{item.quantity}개</Text>
+                  </View>
                 </View>
-              </View>
-            )}
+              );
+            }}
           />
-        </ConfirmModal>
-      </KeyboardAvoidingView>
+
+          {combo && (
+            <View style={styles.buttonWrapper}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => setShowConfirmModal(true)}
+              >
+                <Text style={styles.buttonText}>사용하기</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {/* 확인용 모달 */}
+          <ConfirmModal
+            visible={showConfirmModal}
+            title="이렇게 사용하시겠어요?"
+            confirmText="사용하기"
+            cancelText="취소"
+            onCancel={() => setShowConfirmModal(false)}
+            onConfirm={handleUseCoins}
+          >
+            <FlatList
+              data={combo}
+              keyExtractor={(item) => `${item.denomination}`}
+              contentContainerStyle={{ gap: 12, marginTop: 20 }}
+              renderItem={({ item }) => (
+                <View style={styles.changeItemWrapper}>
+                  <Image
+                    source={item.image}
+                    style={styles.changeItemImage}
+                    contentFit="contain"
+                  />
+                  <View style={styles.changeItemTextWrapper}>
+                    <Text style={styles.changeItem}>
+                      {item.denomination}
+                      {symbol}
+                    </Text>
+                    <Text style={styles.changeItem}>x</Text>
+                    <Text style={styles.changeItem}>{item.quantity}개</Text>
+                  </View>
+                </View>
+              )}
+            />
+          </ConfirmModal>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }
