@@ -4,7 +4,7 @@ import { useWalletStore } from "@/stores/wallet-store";
 import { getCurrencySymbol } from "@/utils/getCurrencySymbol";
 import Entypo from "@expo/vector-icons/Entypo";
 import { useRouter } from "expo-router"; // expo-router용
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,6 +12,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Config from "react-native-config";
+import * as Updates from "expo-updates";
 
 export default function HomeScreen() {
   const { wallet } = useWalletStore();
@@ -24,10 +26,29 @@ export default function HomeScreen() {
   const symbol = getCurrencySymbol(wallet.country);
   const currency = currencies[wallet.country];
 
+  const [isUpdateAvailable, setIsUpdateAvailable] = useState<boolean | null>(
+    null
+  );
+  const [isUpdateDownloaded, setIsUpdateDownloaded] = useState(false);
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.container}>
-        <Text style={styles.greeting}>동전 지갑</Text>
+        <Text style={styles.greeting}>
+          동전 지갑
+          {Config.ENV !== "prod" ? `(${Config.ENV})` : ""}
+        </Text>
+
+        {/* <Text style={{ color: "white" }}>OTA 업데이트 상태: {Config.ENV}</Text>
+        <Text style={{ color: "white" }}>
+          업데이트 있음? {String(isUpdateAvailable)}
+        </Text>
+        <Text style={{ color: "white" }}>
+          다운로드 완료? {String(isUpdateDownloaded)}
+        </Text>
+        <Text style={{ color: "white" }}>
+          런타임 버전: {Updates.runtimeVersion}
+        </Text> */}
 
         <View style={styles.card}>
           <View style={styles.cardHeader}>

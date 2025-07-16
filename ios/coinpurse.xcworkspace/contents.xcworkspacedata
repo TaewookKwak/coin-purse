@@ -2,9 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:coinpurse.xcodeproj">
+      location = "group:/Users/taewookkwak/Desktop/projects/sam/coin_purse/coin-purse/ios/coinpurse.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:coinpurse.xcodeproj">
    </FileRef>
 </Workspace>

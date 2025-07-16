@@ -12,12 +12,14 @@ import "react-native-reanimated";
 
 import SplashScreen from "@/components/splash-screen";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import CodePush from "@revopush/react-native-code-push";
 import { View } from "react-native";
+import * as Updates from "expo-updates";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreenApi.preventAutoHideAsync();
 
-export default function RootLayout() {
+function RootLayout() {
   const colorScheme = useColorScheme();
   const [showSplash, setShowSplash] = useState(false);
 
@@ -32,6 +34,22 @@ export default function RootLayout() {
       });
     }
   }, [loaded]);
+
+  useEffect(() => {
+    const checkUpdates = async () => {
+      try {
+        const update = await Updates.checkForUpdateAsync();
+
+        if (update.isAvailable) {
+          await Updates.fetchUpdateAsync();
+        }
+      } catch (e) {
+        console.log("Update check failed", e);
+      }
+    };
+
+    checkUpdates();
+  }, []);
 
   if (!loaded) {
     return null;
@@ -77,3 +95,7 @@ export default function RootLayout() {
     </ThemeProvider>
   );
 }
+
+export default CodePush({
+  checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+})(RootLayout);
