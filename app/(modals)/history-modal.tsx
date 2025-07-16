@@ -11,6 +11,7 @@ import { useWalletStore } from "@/stores/wallet-store";
 import { getCurrencySymbol } from "@/utils/getCurrencySymbol";
 import { Image } from "expo-image";
 import ConfirmModal from "@/components/ui/confirm-modal";
+import Entypo from "@expo/vector-icons/Entypo";
 
 const SORT_OPTIONS = {
   RECENT: "최신순",
@@ -70,7 +71,7 @@ export default function HistoryModal() {
           style={styles.resetButton}
           onPress={() => setShowResetModal(true)}
         >
-          <Text style={styles.resetButtonText}>초기화</Text>
+          <Entypo name="trash" size={20} color="#888" />
         </TouchableOpacity>
       </View>
 
@@ -142,11 +143,11 @@ export default function HistoryModal() {
                   {symbol}
                 </Text>
 
-                <Text style={styles.arrow}>→</Text>
+                <Entypo name="chevron-right" size={20} color="#ddd" />
 
                 <Text style={styles.afterText}>
                   {item.spent}
-                  {symbol}
+                  {symbol} 사용
                 </Text>
               </View>
             </View>
@@ -156,13 +157,17 @@ export default function HistoryModal() {
       {showResetModal && (
         <ConfirmModal
           visible={showResetModal}
-          title="이용 내역을 초기화 하시겠습니까?"
+          title="이용 내역 초기화"
           onCancel={() => setShowResetModal(false)}
           onConfirm={() => {
             resetHistory();
             setShowResetModal(false);
           }}
-        />
+        >
+          <Text style={styles.confirmModalText}>
+            이용 내역을 초기화 하면 모든 내역이 삭제됩니다.
+          </Text>
+        </ConfirmModal>
       )}
     </View>
   );
@@ -188,9 +193,12 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   resetButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "#1e1e1e",
+    justifyContent: "center",
+    alignItems: "center",
   },
   resetButtonText: {
     fontSize: 14,
@@ -265,5 +273,10 @@ const styles = StyleSheet.create({
   arrow: {
     fontSize: 14,
     color: "#ddd",
+  },
+  confirmModalText: {
+    color: "#fff",
+    fontSize: 14,
+    textAlign: "center",
   },
 });

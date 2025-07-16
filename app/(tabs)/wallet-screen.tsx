@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   denom: {
-    fontSize: 20,
+    fontSize: 18,
     color: "#eee",
   },
   counter: {
@@ -148,14 +148,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  btnText: {
-    color: "#fff",
-    fontSize: 20,
-  },
   qty: {
     color: "#fff",
-    fontSize: 18,
-    minWidth: 40,
+    fontSize: 16,
+    minWidth: 32,
     textAlign: "center",
   },
   coinImage: {

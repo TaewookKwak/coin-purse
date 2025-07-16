@@ -4,7 +4,7 @@ import { useWalletStore } from "@/stores/wallet-store";
 import { getCurrencySymbol } from "@/utils/getCurrencySymbol";
 import Entypo from "@expo/vector-icons/Entypo";
 import { useRouter } from "expo-router"; // expo-router용
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -28,12 +28,6 @@ export default function HomeScreen() {
     0
   );
   const symbol = getCurrencySymbol(wallet.country);
-  const currency = currencies[wallet.country];
-
-  const [isUpdateAvailable, setIsUpdateAvailable] = useState<boolean | null>(
-    null
-  );
-  const [isUpdateDownloaded, setIsUpdateDownloaded] = useState(false);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -42,17 +36,6 @@ export default function HomeScreen() {
           동전 지갑
           {Config.ENV !== "prod" ? `(${Config.ENV})` : ""}
         </Text>
-
-        {/* <Text style={{ color: "white" }}>OTA 업데이트 상태: {Config.ENV}</Text>
-        <Text style={{ color: "white" }}>
-          업데이트 있음? {String(isUpdateAvailable)}
-        </Text>
-        <Text style={{ color: "white" }}>
-          다운로드 완료? {String(isUpdateDownloaded)}
-        </Text>
-        <Text style={{ color: "white" }}>
-          런타임 버전: {Updates.runtimeVersion}
-        </Text> */}
 
         <View style={styles.card}>
           <View style={styles.cardHeader}>
