@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
   },
   strategyTextSelected: {
     color: "#fff",
-    fontWeight: "bold",
+    fontWeight: "500",
   },
   changeList: {
     gap: 12,

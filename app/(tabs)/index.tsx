@@ -105,16 +105,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 8,
   },
   editBtn: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    paddingVertical: 6,
     flexDirection: "row",
     alignItems: "center",
   },
   editBtnText: {
-    color: "#aaa",
+    color: "#888",
     fontSize: 14,
   },
 
@@ -126,11 +124,11 @@ const styles = StyleSheet.create({
   sub: {
     color: "#888",
     fontSize: 16,
-    marginTop: 8,
+    marginTop: 12,
   },
 
   buttonContainer: {
-    marginTop: 40,
+    marginTop: 20,
   },
   button: {
     backgroundColor: "#1e3a8a",
@@ -141,6 +139,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "500",
   },
 });
