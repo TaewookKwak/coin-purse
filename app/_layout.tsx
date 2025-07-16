@@ -12,9 +12,8 @@ import "react-native-reanimated";
 
 import SplashScreen from "@/components/splash-screen";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import CodePush from "@revopush/react-native-code-push";
-import { View } from "react-native";
 import * as Updates from "expo-updates";
+import { View } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreenApi.preventAutoHideAsync();
@@ -80,6 +79,27 @@ function RootLayout() {
 
               {/* 모달 */}
               <Stack.Screen
+                name="(modals)/currency-modal"
+                options={{
+                  presentation: "card",
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="(modals)/reset-modal"
+                options={{
+                  presentation: "card",
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="(modals)/info-modal"
+                options={{
+                  presentation: "card",
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
                 name="(modals)/history-modal"
                 options={{
                   presentation: "modal",
@@ -96,6 +116,8 @@ function RootLayout() {
   );
 }
 
-export default CodePush({
-  checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
-})(RootLayout);
+export default RootLayout;
+
+// export default CodePush({
+//   checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+// })(RootLayout);

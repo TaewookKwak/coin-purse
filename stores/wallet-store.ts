@@ -35,7 +35,13 @@ type State = {
   resetWallet: () => void; // 지갑 초기화
   loadHistory: () => void; // 지출 내역 로드
   resetHistory: () => void; // 지출 내역 초기화
+  changeCountry: (country: string) => void; // 국가 변경
+  loadWalletData: (country: string) => void; // 특정 국가의 지갑 데이터 로드
 };
+
+// MMKV 키 생성 함수들
+const getWalletKey = (country: string) => `wallet-${country}`;
+const getHistoryKey = (country: string) => `history-${country}`;
 
 export const useWalletStore = create<State>()(
   persist(
@@ -45,21 +51,78 @@ export const useWalletStore = create<State>()(
         coins: [],
       },
       history: [],
-      addCoin: (denomination, quantity) => {
-        const { wallet } = get(); // 현재 지갑 상태
-        const coins = [...wallet.coins]; // 동전 목록 복사
-        const index = coins.findIndex((c) => c.denomination === denomination); // 동전 인덱스 찾기
 
-        if (index > -1) {
-          coins[index].quantity += quantity; // 동전 개수 증가
-        } else {
-          coins.push({ denomination, quantity, image: "" }); // 새로운 동전 추가
+      // 특정 국가의 지갑 데이터 로드
+      loadWalletData: (country: string) => {
+        const walletKey = getWalletKey(country);
+        const historyKey = getHistoryKey(country);
+
+        // 동전 데이터 로드
+        const walletData = storage.getString(walletKey);
+        let coins: Coin[] = [];
+        if (walletData) {
+          try {
+            const parsed = JSON.parse(walletData);
+            coins = parsed.coins || [];
+          } catch (err) {
+            console.error("Failed to load wallet data from MMKV", err);
+          }
         }
 
-        set({ wallet: { ...wallet, coins } }); // 지갑 상태 업데이트
+        // 내역 데이터 로드
+        const historyData = storage.getString(historyKey);
+        let history: HistoryItem[] = [];
+        if (historyData) {
+          try {
+            history = JSON.parse(historyData);
+          } catch (err) {
+            console.error("Failed to load history from MMKV", err);
+          }
+        }
+
+        set({
+          wallet: { country, coins },
+          history,
+        });
       },
+
+      // 국가 변경
+      changeCountry: (country: string) => {
+        const { wallet } = get();
+
+        // 현재 국가의 데이터 저장
+        const currentWalletKey = getWalletKey(wallet.country);
+        const currentHistoryKey = getHistoryKey(wallet.country);
+
+        storage.set(currentWalletKey, JSON.stringify(wallet));
+        storage.set(currentHistoryKey, JSON.stringify(get().history));
+
+        // 새 국가의 데이터 로드
+        get().loadWalletData(country);
+      },
+
+      addCoin: (denomination, quantity) => {
+        const { wallet } = get();
+        const coins = [...wallet.coins];
+        const index = coins.findIndex((c) => c.denomination === denomination);
+
+        if (index > -1) {
+          coins[index].quantity += quantity;
+        } else {
+          coins.push({ denomination, quantity, image: "" });
+        }
+
+        const updatedWallet = { ...wallet, coins };
+
+        // MMKV에 저장
+        const walletKey = getWalletKey(wallet.country);
+        storage.set(walletKey, JSON.stringify(updatedWallet));
+
+        set({ wallet: updatedWallet });
+      },
+
       useCoins: (used) => {
-        const { wallet, history } = get(); // 현재 지갑 상태
+        const { wallet, history } = get();
         const coins = wallet.coins.map((coin) => {
           const usedCoin = used.find(
             (u) => u.denomination === coin.denomination
@@ -68,15 +131,15 @@ export const useWalletStore = create<State>()(
           if (usedCoin) {
             return {
               ...coin,
-              quantity: Math.max(coin.quantity - usedCoin.quantity, 0), // 사용된 동전 개수 감소, Math.max 사용하여 0 이하로 떨어지지 않도록 함
+              quantity: Math.max(coin.quantity - usedCoin.quantity, 0),
             };
           }
           return coin;
         });
 
         const newHistoryItem = {
-          date: new Date().toISOString(), // 예) 2025-04-10T00:00:00.000Z
-          combo: used, // 예) [{denomination: 100, quantity: 1}, {denomination: 50, quantity: 2}]
+          date: new Date().toISOString(),
+          combo: used,
           amount: coins.reduce(
             (acc, coin) => acc + coin.denomination * coin.quantity,
             0
@@ -87,22 +150,34 @@ export const useWalletStore = create<State>()(
           ),
           symbol: getCurrencySymbol(wallet.country),
         };
-        const langKey = `coin-history-${wallet.country}`;
+
+        const updatedWallet = { ...wallet, coins };
         const updatedHistory = [newHistoryItem, ...history];
-        storage.set(langKey, JSON.stringify(updatedHistory));
+
+        // MMKV에 저장
+        const walletKey = getWalletKey(wallet.country);
+        const historyKey = getHistoryKey(wallet.country);
+        storage.set(walletKey, JSON.stringify(updatedWallet));
+        storage.set(historyKey, JSON.stringify(updatedHistory));
 
         set({
-          wallet: { ...wallet, coins },
+          wallet: updatedWallet,
           history: updatedHistory,
         });
       },
+
       resetWallet: () => {
-        set({
-          wallet: {
-            country: "JP",
-            coins: [],
-          },
-        });
+        const { wallet } = get();
+        const resetWallet = {
+          country: wallet.country,
+          coins: [],
+        };
+
+        // MMKV에 저장
+        const walletKey = getWalletKey(wallet.country);
+        storage.set(walletKey, JSON.stringify(resetWallet));
+
+        set({ wallet: resetWallet });
       },
 
       addHistory: (date, combo, amount, spent, symbol) => {
@@ -111,15 +186,18 @@ export const useWalletStore = create<State>()(
           { date, combo, amount, spent, symbol },
           ...history,
         ];
-        const langKey = `coin-history-${wallet.country}`;
-        storage.set(langKey, JSON.stringify(updatedHistory));
+
+        // MMKV에 저장
+        const historyKey = getHistoryKey(wallet.country);
+        storage.set(historyKey, JSON.stringify(updatedHistory));
+
         set({ history: updatedHistory });
       },
 
       loadHistory: () => {
         const { wallet } = get();
-        const langKey = `coin-history-${wallet.country}`;
-        const raw = storage.getString(langKey);
+        const historyKey = getHistoryKey(wallet.country);
+        const raw = storage.getString(historyKey);
 
         if (raw) {
           try {
@@ -130,10 +208,11 @@ export const useWalletStore = create<State>()(
           }
         }
       },
+
       resetHistory: () => {
         const { wallet } = get();
-        const langKey = `coin-history-${wallet.country}`;
-        storage.delete(langKey);
+        const historyKey = getHistoryKey(wallet.country);
+        storage.delete(historyKey);
         set({ history: [] });
       },
     }),

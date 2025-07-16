@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   View,
   Text,
@@ -19,12 +19,17 @@ export default function WalletScreen() {
 
   const coinList = currencies[country].coins;
 
-  const getCoinQuantity = (denom: number) => {
-    return coins.find((c) => c.denomination === denom)?.quantity || 0;
-  };
+  const getCoinQuantity = useCallback(
+    (denom: number) => {
+      return coins.find((c) => c.denomination === denom)?.quantity || 0;
+    },
+    [coins]
+  );
 
-  const getTotal = () =>
-    coins.reduce((sum, c) => sum + c.denomination * c.quantity, 0);
+  const getTotal = useMemo(
+    () => coins.reduce((sum, c) => sum + c.denomination * c.quantity, 0),
+    [coins]
+  );
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -32,7 +37,7 @@ export default function WalletScreen() {
         <Text style={styles.title}>나의 지갑 속 잔돈</Text>
 
         <RollingNumber
-          value={getTotal()}
+          value={getTotal}
           duration={1000}
           fontSize={36}
           color="#fff"

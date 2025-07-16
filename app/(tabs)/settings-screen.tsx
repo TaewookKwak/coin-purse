@@ -1,102 +1,71 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
   SafeAreaView,
 } from "react-native";
 import { useWalletStore } from "@/stores/wallet-store";
 import { currencies } from "@/constants/currencies";
-import ConfirmModal from "@/components/ui/confirm-modal";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
+import Entypo from "@expo/vector-icons/Entypo";
+
 export default function SettingsScreen() {
-  const { wallet } = useWalletStore();
-  const [selectedCountry, setSelectedCountry] = useState(wallet.country);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const wallet = useWalletStore((state) => state.wallet);
+  const router = useRouter();
 
-  const handleConfirm = () => {
-    const defaultCoins = currencies[selectedCountry].coins.map((denom) => ({
-      denomination: denom.denomination,
-      quantity: 0,
-      image: denom.image,
-    }));
-
-    useWalletStore.setState(() => ({
-      wallet: {
-        country: selectedCountry,
-        coins: defaultCoins,
-      },
-    }));
-
-    setShowConfirmModal(false);
-
-    setTimeout(() => {
-      router.replace("/");
-    }, 300);
-  };
+  const menuItems = [
+    {
+      id: "currency",
+      title: "국가/화폐 선택",
+      subtitle: `${currencies[wallet.country].flag} ${
+        currencies[wallet.country].name
+      }`,
+      icon: "globe" as const,
+      route: "/(modals)/currency-modal" as const,
+    },
+    {
+      id: "reset",
+      title: "데이터 초기화",
+      subtitle: "지갑 및 내역 데이터 리셋",
+      icon: "trash" as const,
+      route: "/(modals)/reset-modal" as const,
+    },
+    {
+      id: "info",
+      title: "앱 정보",
+      subtitle: "버전 및 개발자 정보",
+      icon: "info-with-circle" as const,
+      route: "/(modals)/info-modal" as const,
+    },
+  ];
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.container}>
-        <Text style={styles.title}>국가/화폐 선택</Text>
+        <Text style={styles.title}>설정</Text>
 
-        <FlatList
-          data={Object.keys(currencies)}
-          keyExtractor={(item) => item}
-          renderItem={({ item }) => {
-            const isSelected = selectedCountry === item;
-            return (
-              <TouchableOpacity
-                style={[styles.item, isSelected && styles.itemSelected]}
-                onPress={() => setSelectedCountry(item)}
-              >
-                <Text
-                  style={[
-                    styles.itemText,
-                    isSelected && styles.itemTextSelected,
-                  ]}
-                >
-                  {currencies[item].flag} - {currencies[item].name}
-                </Text>
-
-                {/* 현재 세팅 국가 */}
-                {wallet.country === item && (
-                  <Text style={styles.currentCountry}>사용중</Text>
-                )}
-              </TouchableOpacity>
-            );
-          }}
-          contentContainerStyle={{ paddingTop: 20, paddingBottom: 120 }}
-        />
-
-        <View style={styles.buttonWrapper}>
-          <TouchableOpacity
-            style={[
-              styles.button,
-              selectedCountry === wallet.country && styles.buttonDisabled,
-            ]}
-            disabled={selectedCountry === wallet.country}
-            onPress={() => setShowConfirmModal(true)}
-          >
-            <Text style={styles.buttonText}>변경하기</Text>
-          </TouchableOpacity>
+        <View style={styles.menuContainer}>
+          {menuItems.map((item) => (
+            <TouchableOpacity
+              key={item.id}
+              style={styles.menuItem}
+              onPress={() => router.push(item.route as any)}
+            >
+              <View style={styles.menuItemLeft}>
+                <View style={styles.iconContainer}>
+                  <Entypo name={item.icon} size={20} color="#1e3a8a" />
+                </View>
+                <View style={styles.menuItemText}>
+                  <Text style={styles.menuItemTitle}>{item.title}</Text>
+                  <Text style={styles.menuItemSubtitle}>{item.subtitle}</Text>
+                </View>
+              </View>
+              <Entypo name="chevron-small-right" size={20} color="#666" />
+            </TouchableOpacity>
+          ))}
         </View>
-
-        <ConfirmModal
-          visible={showConfirmModal}
-          title="이 국가 설정으로 변경할까요?"
-          confirmText="변경"
-          cancelText="취소"
-          onCancel={() => setShowConfirmModal(false)}
-          onConfirm={handleConfirm}
-        >
-          <Text style={{ color: "#ccc", textAlign: "center", fontSize: 16 }}>
-            선택한 국가는 {currencies[selectedCountry].flag}
-            {currencies[selectedCountry].name} 입니다.
-          </Text>
-        </ConfirmModal>
       </View>
     </SafeAreaView>
   );
@@ -116,51 +85,44 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     color: "#fff",
-    marginBottom: 20,
+    marginBottom: 32,
   },
-  item: {
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: "#1f1f1f",
-    marginBottom: 12,
+  menuContainer: {
+    gap: 12,
+  },
+  menuItem: {
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-  itemSelected: {
-    backgroundColor: "#1e3a8a",
-  },
-  itemText: {
-    fontSize: 16,
-    color: "#ccc",
-  },
-  itemTextSelected: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  currentCountry: {
-    fontSize: 12,
-    color: "#ccc",
-    marginTop: 4,
-  },
-  buttonWrapper: {
-    position: "absolute",
-    bottom: 24,
-    left: 24,
-    right: 24,
-  },
-  button: {
-    backgroundColor: "#1e3a8a",
-    paddingVertical: 18,
-    borderRadius: 12,
     alignItems: "center",
+    padding: 16,
+    borderRadius: 12,
+    backgroundColor: "#1f1f1f",
   },
-  buttonText: {
+  menuItemLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  iconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#1e3a8a20",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 16,
+  },
+  menuItemText: {
+    flex: 1,
+  },
+  menuItemTitle: {
+    fontSize: 16,
     color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "500",
   },
-  buttonDisabled: {
-    backgroundColor: "#333",
-    opacity: 0.5,
+  menuItemSubtitle: {
+    fontSize: 14,
+    color: "#888",
+    marginTop: 2,
   },
 });

@@ -13,11 +13,15 @@ import {
   View,
 } from "react-native";
 import Config from "react-native-config";
-import * as Updates from "expo-updates";
 
 export default function HomeScreen() {
-  const { wallet } = useWalletStore();
+  const { wallet, loadWalletData } = useWalletStore();
   const router = useRouter();
+
+  // 앱 시작 시 현재 화폐의 데이터 로드
+  useEffect(() => {
+    loadWalletData(wallet.country);
+  }, []);
 
   const total = wallet.coins.reduce(
     (sum, c) => sum + c.denomination * c.quantity,
