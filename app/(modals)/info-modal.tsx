@@ -149,7 +149,11 @@ export default function InfoModal() {
                   <Text style={styles.infoTitle}>{info.title}</Text>
                 </View>
                 <View style={styles.infoRight}>
-                  <Text style={styles.infoValue} numberOfLines={1}>
+                  <Text
+                    style={styles.infoValue}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
                     {info.value}
                   </Text>
                   {info.action && (
@@ -219,6 +223,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 12,
     backgroundColor: "#1f1f1f",
+    gap: 12,
   },
   infoLeft: {
     flexDirection: "row",
@@ -242,6 +247,8 @@ const styles = StyleSheet.create({
   infoRight: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "flex-end",
+    width: "50%",
   },
   infoValue: {
     fontSize: 16,
