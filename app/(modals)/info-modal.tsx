@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,15 +11,19 @@ import Entypo from "@expo/vector-icons/Entypo";
 import Config from "react-native-config";
 import * as Updates from "expo-updates";
 import { useRouter } from "expo-router";
+import DeviceInfo from "react-native-device-info";
 
 export default function InfoModal() {
   const router = useRouter();
+  const [isUpdateAvailable, setIsUpdateAvailable] = useState<boolean | null>(
+    null
+  );
 
   const appInfo = [
     {
       id: "version",
       title: "앱 버전",
-      value: "1.0.0",
+      value: DeviceInfo.getVersion(),
       icon: "info-with-circle" as const,
     },
     {
@@ -37,8 +41,15 @@ export default function InfoModal() {
     {
       id: "runtime",
       title: "런타임 버전",
-      value: Updates.runtimeVersion || "***",
+      value: isUpdateAvailable
+        ? "업데이트 있음"
+        : Updates.runtimeVersion || "***",
       icon: "cog" as const,
+      action: isUpdateAvailable
+        ? () => {
+            Updates.fetchUpdateAsync();
+          }
+        : undefined,
     },
   ];
 
@@ -65,6 +76,22 @@ export default function InfoModal() {
     },
   ];
 
+  useEffect(() => {
+    const checkUpdates = async () => {
+      try {
+        const update = await Updates.checkForUpdateAsync();
+
+        if (update.isAvailable) {
+          setIsUpdateAvailable(true);
+        }
+      } catch (e) {
+        console.log("Update check failed", e);
+      }
+    };
+
+    checkUpdates();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -82,7 +109,12 @@ export default function InfoModal() {
           <Text style={styles.sectionTitle}>앱 정보</Text>
           <View style={styles.infoContainer}>
             {appInfo.map((info) => (
-              <View key={info.id} style={styles.infoItem}>
+              <TouchableOpacity
+                key={info.id}
+                style={styles.infoItem}
+                onPress={info.action}
+                disabled={!info.action}
+              >
                 <View style={styles.infoLeft}>
                   <View style={styles.iconContainer}>
                     <Entypo name={info.icon} size={20} color="#1e3a8a" />
@@ -92,7 +124,10 @@ export default function InfoModal() {
                 <Text style={styles.infoValue} numberOfLines={1}>
                   {info.value}
                 </Text>
-              </View>
+                {info.action && (
+                  <Entypo name="chevron-small-right" size={20} color="#666" />
+                )}
+              </TouchableOpacity>
             ))}
           </View>
         </View>

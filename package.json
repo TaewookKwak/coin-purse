@@ -52,6 +52,7 @@
     "react-dom": "18.3.1",
     "react-native": "0.76.9",
     "react-native-config": "^1.5.5",
+    "react-native-device-info": "^14.0.4",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-mmkv": "^3.2.0",
     "react-native-reanimated": "~3.16.1",
