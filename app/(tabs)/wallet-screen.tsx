@@ -12,6 +12,7 @@ import { currencies } from "@/constants/currencies";
 import { getCurrencySymbol } from "@/utils/getCurrencySymbol";
 import { Image } from "expo-image";
 import RollingNumber from "@/components/rolling-number";
+import Entypo from "@expo/vector-icons/Entypo";
 
 export default function WalletScreen() {
   const { wallet, addCoin } = useWalletStore();
@@ -71,7 +72,7 @@ export default function WalletScreen() {
                     }
                   }}
                 >
-                  <Text style={styles.btnText}>-</Text>
+                  <Entypo name="minus" size={20} color="#fff" />
                 </TouchableOpacity>
 
                 <Text style={styles.qty}>
@@ -82,7 +83,7 @@ export default function WalletScreen() {
                   style={styles.btn}
                   onPress={() => addCoin(item.denomination, 1)}
                 >
-                  <Text style={styles.btnText}>+</Text>
+                  <Entypo name="plus" size={20} color="#fff" />
                 </TouchableOpacity>
               </View>
             </View>
