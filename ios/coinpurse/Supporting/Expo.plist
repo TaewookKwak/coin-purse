@@ -15,7 +15,7 @@
     <key>EXUpdatesRequestHeaders</key>
     <dict>
       <key>expo-channel-name</key>
-      <string>dev</string>
+      <string>prod</string>
     </dict>
   </dict>
 </plist>
