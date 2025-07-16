@@ -3,6 +3,8 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { MMKV } from "react-native-mmkv";
 import { Coin } from "@/types";
 import { getCurrencySymbol } from "@/utils/getCurrencySymbol";
+import { getCoinImage } from "@/utils/getCoinImage";
+import { currencies } from "@/constants/currencies";
 
 // MMKV 인스턴스 생성
 const storage = new MMKV();
@@ -64,6 +66,17 @@ export const useWalletStore = create<State>()(
           try {
             const parsed = JSON.parse(walletData);
             coins = parsed.coins || [];
+
+            // 기존 동전들에 이미지 추가 (이미지가 없는 경우)
+            coins = coins.map((coin) => {
+              if (!coin.image) {
+                return {
+                  ...coin,
+                  image: getCoinImage(country, coin.denomination),
+                };
+              }
+              return coin;
+            });
           } catch (err) {
             console.error("Failed to load wallet data from MMKV", err);
           }

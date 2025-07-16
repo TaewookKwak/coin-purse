@@ -153,6 +153,7 @@ export default function CalculatorScreen() {
           data={combo}
           showsVerticalScrollIndicator={true}
           renderItem={({ item }) => {
+            console.log(item);
             return (
               <View style={styles.changeItemWrapper}>
                 <Image
