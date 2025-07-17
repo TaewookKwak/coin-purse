@@ -8,14 +8,12 @@ import * as SplashScreenApi from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import "react-native-reanimated";
-
+import LoopSplashScreen from "@/components/loop-splash-screen";
 import SplashScreen from "@/components/splash-screen";
+import { useCheckStoreVersion } from "@/hooks/useCheckStoreVersion";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import * as Updates from "expo-updates";
-import { Alert, Linking, View } from "react-native";
-import DeviceInfo from "react-native-device-info";
-import versionCompare from "@/utils/versionCompare";
-import LoopSplashScreen from "@/components/loop-splash-screen";
+import { View } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreenApi.preventAutoHideAsync();
@@ -23,7 +21,7 @@ SplashScreenApi.preventAutoHideAsync();
 function RootLayout() {
   const colorScheme = useColorScheme();
   const [showSplash, setShowSplash] = useState(false);
-  const [mustUpdate, setMustUpdate] = useState(false);
+  const mustUpdate = useCheckStoreVersion();
 
   useEffect(() => {
     SplashScreenApi.hideAsync().then(() => {
@@ -45,45 +43,6 @@ function RootLayout() {
     };
 
     checkUpdates();
-  }, []);
-
-  useEffect(() => {
-    const checkStoreVersion = async () => {
-      try {
-        // const res = await fetch("https://example.com/version"); // 버전 정보 API
-        // const { latestVersion, forceUpdate, storeUrl } = await res.json();
-
-        const latestVersion = "1.0.0";
-        const storeUrl = "https://github.com/taewookkwak";
-        const forceUpdate = true;
-
-        const currentVersion = DeviceInfo.getVersion(); // e.g., "1.0.1"
-
-        const needsUpdate = versionCompare(currentVersion, latestVersion) < 0;
-
-        if (needsUpdate && forceUpdate) {
-          setMustUpdate(true);
-
-          Alert.alert(
-            "업데이트 필요",
-            `현재 버전(${currentVersion})에서 계속 사용하려면 최신 버전(${latestVersion})으로 업데이트해야 합니다.`,
-            [
-              {
-                text: "업데이트 하기",
-                onPress: () => {
-                  Linking.openURL(storeUrl);
-                },
-              },
-            ],
-            { cancelable: false }
-          );
-        }
-      } catch (e) {
-        console.log("버전 체크 실패", e);
-      }
-    };
-
-    checkStoreVersion();
   }, []);
 
   if (mustUpdate) {
